@@ -1,0 +1,9 @@
+.link {
+    display: inline-flex;
+    padding: 8px;
+    text-decoration: none;
+  }
+  
+  .active {
+    color: rgb(226, 18, 18);
+  }

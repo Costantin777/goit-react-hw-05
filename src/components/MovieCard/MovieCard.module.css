@@ -1,0 +1,10 @@
+.backLink {
+    display: inline-flex;
+    padding: 8px;
+    text-decoration: none;
+}
+
+.movieWrap {
+    display: flex;
+    gap: 20px;
+}
