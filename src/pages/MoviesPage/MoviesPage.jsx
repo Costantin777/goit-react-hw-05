@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getMovies } from "/src/movies-api.js";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import MovieList from "../../components/MovieList/MovieList";
@@ -6,14 +7,15 @@ import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import LoadingMessage from "../../components/LoadingMessage/LoadingMessage";
 
 export default function MoviesPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("query") || "");
   const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const handleSearch = (newQuery) => {
     setQuery(newQuery);
+    setSearchParams({ query: newQuery });
     setMovies([]);
   };
 

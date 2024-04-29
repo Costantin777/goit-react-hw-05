@@ -1,19 +1,25 @@
-import { useParams, NavLink, Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useLocation, NavLink, Outlet } from "react-router-dom";
 import { getMovieById } from "/src/movies-api.js";
 import MovieCard from "../../components/MovieCard/MovieCard";
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
-import LoadingMessage from '../../components/LoadingMessage/LoadingMessage'
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import LoadingMessage from "../../components/LoadingMessage/LoadingMessage";
 import { Suspense } from "react";
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
+  const location = useLocation();
+  const locationStateRef = useRef(location.state);
 
-  const [movie, setMovie] = useState(null);
+  const [movie, setMovie] = useState(locationStateRef.current?.movie || null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    if (movie) {
+      return;
+    }
+
     async function fetchMovie() {
       try {
         setIsLoading(true);
@@ -27,12 +33,12 @@ export default function MovieDetailsPage() {
     }
 
     fetchMovie();
-  }, [movieId]);
+  }, [movie, movieId]);
 
   return (
     <div>
-      {error && <ErrorMessage/>}
-      { isLoading && <LoadingMessage/>}
+      {error && <ErrorMessage />}
+      {isLoading && <LoadingMessage />}
 
       {movie && <MovieCard movie={movie} />}
       <ul>
